@@ -9,7 +9,6 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     TextView textView;
     Button button;
-    int counter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,12 +17,27 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.counterText);
         button = findViewById(R.id.btn);
         button.setOnClickListener(view -> {
-           increaseCounter(textView);
+            CounterSingleton.getInstance().increase();
+            textView.setText(String.valueOf(CounterSingleton.getInstance().getValue()));
         });
     }
 
-    private void increaseCounter(TextView textView){
-        ++counter;
-        textView.setText(String.valueOf(counter));
+    @Override
+    protected void onPause() {
+        super.onPause();
+        textView.setText(String.valueOf(CounterSingleton.getInstance().getValue()));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        textView.setText(String.valueOf(CounterSingleton.getInstance().getValue()));
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        textView.setText(String.valueOf(CounterSingleton.getInstance().getValue()));
     }
 }
